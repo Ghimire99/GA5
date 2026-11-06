@@ -28,16 +28,16 @@
 ## Set up: Download the reference transcriptome FASTA file from NCBI
 
 ```bash
-# Downloaded on <???>
-<???>
+# Downloaded on 11/4/26
+wget -P data/ref "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/801/865/GCF_016801865.2_TS_CPP_V2/GCF_016801865.2_TS_CPP_V2_rna.fna.gz"
 ```
 
 ## Set up: Set file paths
 
 ```bash
 # Inputs:
-fastq_dir=<???>
-ref_transcripts=<???>
+fastq_dir=../garrigos/fastq
+ref_transcripts=data/ref/GCF_016801865.2_TS_CPP_V2_rna.fna.gz
 
 # Base output dir:
 outdir=results
@@ -45,15 +45,29 @@ outdir=results
 
 ## Step 1: Read trimming with TrimGalore
 
-<???>
+for sample in S63 S64 S65 S66 S67 S68 S69; do
+    sbatch scripts/trimgalore.sh \
+        "$fastq_dir/${sample}_R1.fastq.gz" \
+        "$fastq_dir/${sample}_R2.fastq.gz" \
+        "$outdir/trimgalore"
+done
 
 ## Step 2: Creating a transcriptome index with Salmon
 
-<???>
+sbatch scripts/salmon_index.sh \
+    data/ref/GCF_016801865.2_TS_CPP_V2_rna.fna.gz \
+    results/salmon_index
 
 ## Step 3: Pseudo-alignment and quantification with Salmon
 
-<???>
+for sample in S63 S64 S65 S66 S67 S68 S69
+do
+    sbatch scripts/salmon_quant.sh \
+        results/trimgalore/${sample}_R1.fastq.gz \
+        results/trimgalore/${sample}_R2.fastq.gz \
+        results/salmon_index \
+        results/salmon_quant
+done
 
 ## Step 4: Summarizing the results of all steps with MultiQC
 
