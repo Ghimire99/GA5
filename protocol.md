@@ -45,32 +45,49 @@ outdir=results
 
 ## Step 1: Read trimming with TrimGalore
 
+```bash
 for sample in S63 S64 S65 S66 S67 S68 S69; do
     sbatch scripts/trimgalore.sh \
         "$fastq_dir/${sample}_R1.fastq.gz" \
         "$fastq_dir/${sample}_R2.fastq.gz" \
         "$outdir/trimgalore"
 done
+```
 
 ## Step 2: Creating a transcriptome index with Salmon
 
+```bash
 sbatch scripts/salmon_index.sh \
-    data/ref/GCF_016801865.2_TS_CPP_V2_rna.fna.gz \
-    results/salmon_index
+    "$ref_transcripts" \
+    "$outdir/salmon_index"
+```
 
 ## Step 3: Pseudo-alignment and quantification with Salmon
 
+```bash
 for sample in S63 S64 S65 S66 S67 S68 S69
 do
     sbatch scripts/salmon_quant.sh \
-        results/trimgalore/${sample}_R1.fastq.gz \
-        results/trimgalore/${sample}_R2.fastq.gz \
-        results/salmon_index \
-        results/salmon_quant
+        "$outdir/trimgalore/${sample}_R1.fastq.gz" \
+        "$outdir/trimgalore/${sample}_R2.fastq.gz" \
+        "$outdir/salmon_index" \
+        "$outdir/salmon_quant"
 done
+```
 
 ## Step 4: Summarizing the results of all steps with MultiQC
 
+```bash
 sbatch scripts/multiqc.sh \
-    results \
-    results/multiqc
+    "$outdir" \
+    "$outdir/multiqc"
+```
+
+## Software versions used
+
+Each script prints the exact container tool version to its Slurm log at the end
+of the run. Versions used in this run (confirmed from the logs):
+
+- TrimGalore: 2.3.0 (container `trim-galore:2.3.0--a56e49e832976df4`)
+- Salmon: 2.8.0 (container `salmon:2.8.0--3c08cbdc1b311e75`)
+- MultiQC: 1.35 (container `multiqc:1.35--562c547b518ebe20`)

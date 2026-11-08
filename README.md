@@ -225,6 +225,12 @@ and whether you agree or disagree with each one, and why:
 
 *Answer*: Which suggestion(s) you addressed, and what you changed:
 
+I addressed Claude's suggestions to improve the formatting and consistency of protocol.md. I placed the commands for Steps 1–4 inside proper bash code blocks, making it easier to distinguish commands from explanatory text and follow the workflow.
+
+I also addressed Claude's suggestion to document the software versions used in the workflow. I added a Software Versions Used section to the protocol that records the versions of Trim Galore, Salmon and MultiQC used in the analysis.
+
+While making these changes, I noticed that I had defined variables earlier in the protocol but was not consistently using them in later steps. I updated the commands to use the previously defined variables instead of repeating file paths directly. This makes the protocol more consistent, easier to maintain and less likely to contain errors if file locations need to be changed in the future.
+
 ------------------------------------------------------------------------
 
 ## Part F: Publish your repo on GitHub
