@@ -241,4 +241,4 @@ While making these changes, I noticed that I had defined variables earlier in th
 
 ### 20: Get a (test) DOI with Zenodo
 
-*Answer*: Your Zenodo Sandbox DOI: [![DOI](https://sandbox.zenodo.org/badge/1384067995.svg)](https://handle.test.datacite.org/10.5072/zenodo.637499)
+*Answer*: Your Zenodo Sandbox DOI: 
