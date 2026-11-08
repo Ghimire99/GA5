@@ -64,7 +64,7 @@ The output of the command was:
 <!-- Put the code to run TrimGalore in `protocol.md`, not here. -->
 
 *Answer*: Whether all batch jobs succeeded, and how you checked that
-(and any problems you encountered, and how you solved them): Yes, all the TrimGalore batch jobs were successful. I checked the ongoing jobs by using squeue -u and after the completion of the job, i checked the slurm log files to verify if they ran successfully or not. I checked for the message ' successfully finished script trimgalore.sh'.
+(and any problems you encountered, and how you solved them): Yes, all the TrimGalore batch jobs were successful. I checked the ongoing jobs by using squeue -u ghimire75 and after the completion of the job, i checked the slurm log files to verify if they ran successfully or not. I checked for the message ' successfully finished script trimgalore.sh'.
 
 I initially expected the slurm log files to be inside the results/trimgalore/logs because the script created the directory. I moved those files into results/trimgalore/logs/ after confirming that all jobs completed successfully.
 
@@ -178,20 +178,33 @@ results/salmon_quant/S69/logs/salmon_quant.log:mapping rate: 82.1824%
 
 *Answer*: For each program, the number of reports that MultiQC found,
 and why it found this number:
+1.Salmon: 7 meta reports, 7 fragment length distributions and 7 library format counts reports were found. It found 7 of each because there were 7 samples.
+2.TrimGalore: 14 reports were found. It found 14 because they are pair ended, so 2 for each samples.
+3.FastQC: 14 reports were found. Same as above it was run on pair ended, so 2 for each samples.
 
 ### 14: The General Statistics table
 
 *Answer*: The sample with the lowest Salmon mapping rate,
-and whether this matches your answer to question 11:
+and whether this matches your answer to question 11: 
+
+The sample with the lowest Salmon mapping rate was S68 and it matches with my answer to Q11.
 
 ### 15: Adapter lengths
 
 *Answer*: The most common adapter lengths, whether this surprised you,
 and why you think these lengths are the most common:
 
+The most common adapter lenghts trimmed were 1-3 bp.
+This was not surprising because many reads only contained a very small part of an adapter at the end.
+I think these short adapter lengths are the most common because many reads only extend a small distance into the adapter sequence at the end. As a result, Trim Galore only needs to remove a few bp during trimming.
+
 ### 16: Ask Claude about the MultiQC report
 
 *Answer*: What you asked, and what you learned from Claude's answer (in your own words):
+
+I asked Claude what the "Overrepresented Sequences" section of the MultiQC report means and whether a warning or failure in this section indicates a problem with my data.
+
+From Claude's explanation, I learned that overrepresented sequences are read sequences that appear much more often than expected. This can happen because of adapter contamination, PCR duplication, rRNA contamination or because some genes are naturally expressed at very high levels in RNA-seq data. I also learned that the "Possible Source" column compares these sequences against a small database of common adapters and primers. A warning or failure in this section does not automatically mean the data are poor quality. For RNA-seq data, highly abundant transcripts can cause overrepresented sequences even when the data are valid. The most important thing is to check whether the sequences are coming from adapters or contamination rather than from real biological sequences.
 
 ------------------------------------------------------------------------
 
@@ -201,6 +214,12 @@ and why you think these lengths are the most common:
 
 *Answer*: At least three of Claude's suggestions,
 and whether you agree or disagree with each one, and why:
+
+1.Claude suggested putting all commands inside proper bash code blocks in protocol.md. I agree with this suggestion because it makes the protocol easier to read and helps users clearly tell the difference between commands and regular text. This makes it easier for someone to follow the workflow correctly.
+
+2.Claude suggested adding a checksum for the reference transcriptome file. I agree with this suggestion because it helps confirm that the downloaded file is the correct one and was not damaged during the download process.
+
+3.Claude suggested listing the software and container versions used in the workflow. I agree with this suggestion because it helps future users know exactly which versions were used and makes it easier to reproduce the same results.
 
 ### 18: Address a suggestion
 
